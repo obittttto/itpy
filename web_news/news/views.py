@@ -6,15 +6,22 @@ from django.shortcuts import render
 #     return HttpResponse("Главная страница новостей")
 
 
-# def about(request):
-#     return HttpResponse("О нашем новостном издании")
+def about(request):
+    content = {
+        "title": "О нашем новостном издании",
+        "text":
+            "«Минский вестник» — независимое городское новостное интернет-издание, основанное в 2018 году. "
+            "Издание специализируется на оперативной информации о жизни города, развитии инфраструктуры, "
+            "культурных событиях и расследованиях локального масштаба. Аудитория портала превышает 150 000 "
+            "читателей ежемесячно. Миссия редакции — честный и объективный рассказ о событиях столицы "
+            "без «воды» и кликбейта."
+        ,
 
-
-# def index(request):
-#     return render(request, "news/index.html")
+    }
+    return render(request, "news/about.html", content)
 
 def index(request):
-    context = {
+    content = {
         "title": "Главные новости дня",
         "articles": [
             "В городе открылся новый парк",
@@ -22,10 +29,10 @@ def index(request):
             "В университете начался учебный год",
         ],
     }
-    return render(request, "news/index.html", context)
+    return render(request, "news/index.html", content)
 
 def category(request):
-    context = {
+    content = {
         "category_name": "Технологии",
         "articles": [
             "Представлена новая модель смартфона",
@@ -33,7 +40,7 @@ def category(request):
             "Учёные разработали новый процессор",
         ],
     }
-    return render(request, "news/category.html", context)
+    return render(request, "news/category.html", content)
 
 
 # Create your views here.
