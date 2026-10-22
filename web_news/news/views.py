@@ -20,6 +20,17 @@ def about(request):
     }
     return render(request, "news/about.html", content)
 
+def contact(request):
+    content = {
+        "title": "Наши контакты",
+        "contacts": [
+            "Email: info@gmail.com",
+            "Телефон: +375 29 123-45-67",
+            "Адрес: г. Минск, ул. Октябрьская, д.11",
+        ],
+    }
+    return render(request, 'news/contact.html', content)
+
 def index(request):
     content = {
         "title": "Главные новости дня",
