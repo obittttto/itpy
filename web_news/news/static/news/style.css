@@ -1,4 +1,4 @@
-body {
+bg-light {
     margin: 0;
     background-color: #f3f5f7;
     color: #263238;
@@ -6,7 +6,7 @@ body {
     line-height: 1.6;
 }
 
-.site-header {
+header {
     background-color: #17324d;
     color: white;
     padding: 24px 0;
@@ -19,18 +19,18 @@ body {
     margin: 0 auto;
 }
 
-.site-title {
+title {
     margin: 0;
     font-size: 30px;
     color: #ffd166;
     letter-spacing: 1px;
 }
 
-.site-nav {
+nav {
     margin-top: 15px;
 }
 
-.site-nav a {
+nav a {
     color: #ffffff;
     text-decoration: none;
     margin-right: 20px;
@@ -38,7 +38,7 @@ body {
     transition: color 0.2s ease;
 }
 
-.site-nav a:hover {
+nav a:hover {
     color: #ffd166;
     text-decoration: underline;
 }
@@ -95,7 +95,7 @@ main {
     margin-bottom: 8px;
 }
 
-.site-footer {
+footer {
     background-color: #e1e7ec;
     padding: 20px 0;
     color: #455a64;
