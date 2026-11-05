@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from .models import Article
 
+from .models import Article
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ArticleForm
+
+
 
 
 def about(request):
@@ -20,6 +22,7 @@ def about(request):
     }
     return render(request, "news/about.html", content)
 
+
 def contact(request):
     content = {
         "title": "Наши контакты",
@@ -30,6 +33,7 @@ def contact(request):
         ],
     }
     return render(request, 'news/contact.html', content)
+
 
 def index(request):
     articles = Article.objects.filter(
@@ -45,6 +49,7 @@ def index(request):
         "news/index.html",
         context,
     )
+
 
 def category(request, category_name=None):
     if category_name is None:
@@ -70,12 +75,9 @@ def category(request, category_name=None):
         context,
     )
 
+
 def article_detail(request, article_id):
-    article = get_object_or_404(
-        Article,
-        id=article_id,
-        is_published=True,
-    )
+    article = Article.objects.get(id=article_id)
 
     context = {
         "article": article,
@@ -87,43 +89,44 @@ def article_detail(request, article_id):
         context,
     )
 
-# def edit_article(request, article_id):
-#     article = get_object_or_404(
-#         Article,
-#         id=article_id
-#     )
-#
-#     if request.method == "POST":
-#         form = ArticleForm(
-#             request.POST,
-#             request.FILES,
-#             instance=article
-#         )
-#
-#         if form.is_valid():
-#             article = form.save()
-#
-#             if article.is_published:
-#                 return redirect(
-#                     "article_detail",
-#                     article_id=article.id
-#                 )
-#
-#             return redirect("home")
-#
-#     else:
-#         form = ArticleForm(instance=article)
-#
-#     context = {
-#         "form": form,
-#         "article": article,
-#     }
-#
-#     return render(
-#         request,
-#         "news/edit_article.html",
-#         context
-#     )
+
+def edit_article(request, article_id):
+    article = get_object_or_404(
+        Article,
+        id=article_id
+    )
+
+    if request.method == "POST":
+        form = ArticleForm(
+            request.POST,
+            request.FILES,
+            instance=article
+        )
+
+        if form.is_valid():
+            article = form.save()
+
+            if article.is_published:
+                return redirect(
+                    "article_detail",
+                    article_id=article.id
+                )
+
+            return redirect("home")
+
+    else:
+        form = ArticleForm(instance=article)
+
+    context = {
+        "form": form,
+        "article": article,
+    }
+
+    return render(
+        request,
+        "news/edit_article.html",
+        context
+    )
 
 def test_form(request):
     context = {}
@@ -142,14 +145,14 @@ def test_form(request):
         "news/test_form.html",
         context,
     )
-def add_article(request):
 
+
+def add_article(request):
     if request.method == "POST":
 
         form = ArticleForm(request.POST)
 
         if form.is_valid():
-
             article = form.save()
 
             return redirect(
@@ -168,5 +171,12 @@ def add_article(request):
         request,
         "news/add_article.html",
         context,
+    )
+
+
+def article_created(request):
+    return render(
+        request,
+        "news/article_created.html",
     )
 # Create your views here.

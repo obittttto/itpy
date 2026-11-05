@@ -12,6 +12,7 @@ class ArticleForm(forms.ModelForm):
             "title",
             "content",
             "category",
+            "image",
         ]
 
         labels = {
@@ -42,4 +43,5 @@ class ArticleForm(forms.ModelForm):
                     "placeholder": "Например: Спорт",
                 }
             ),
+
         }
