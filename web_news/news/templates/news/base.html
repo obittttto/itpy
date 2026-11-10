@@ -38,9 +38,38 @@
                 <a class="nav-link" href="{% url 'category_detail' category_name='Спорт' %}">
                     Спорт
                 </a>
-                <a class="nav-link" href="{% url 'add_article' %}">
-                    Добавить новость
+                {% if user.is_authenticated %}
+
+                <a href="{% url 'article_create' %}">
+                    Создать новость
                 </a>
+
+                {% endif %}
+                {% if user.is_authenticated %}
+
+                <span>
+                    Вы вошли как: {{ user.username }}
+                </span>
+
+                <form
+                    method="POST"
+                    action="{% url 'logout' %}"
+                    style="display: inline;"
+                >
+                    {% csrf_token %}
+
+                    <button type="submit" >
+                        Выйти
+                    </button>
+                </form>
+
+            {% else %}
+
+                <a href="{% url 'login' %}">
+                    Войти
+                </a>
+
+            {% endif %}
             </div>
         </div>
     </nav>

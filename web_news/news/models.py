@@ -40,6 +40,8 @@ class Article(models.Model):
         verbose_name="Изображение"
     )
 
+
+
     def __str__(self):
         return self.title
 # Create your models here.
