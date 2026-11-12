@@ -23,6 +23,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from news.views import delete_article
 from django.contrib.auth import views as auth_views
+from news.views import archive_article
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -60,6 +61,16 @@ urlpatterns = [
         auth_views.LogoutView.as_view(),
         name="logout"
     ),
+    path("article/<int:article_id>/archive/",
+         views.archive_article,
+         name="archive_article"
+    ),
+    path(
+        "article/<int:article_id>/restore/",
+        views.restore_article,
+        name="article_restore"
+    ),
+
 ]
 
 if settings.DEBUG:

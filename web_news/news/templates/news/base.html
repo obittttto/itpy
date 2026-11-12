@@ -20,12 +20,12 @@
 <body class="bg-light">
 
 <header>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
+            <a class="nav-link" href="{% url 'home' %}" style="font-size: 15px">
                 Новостной портал
             </a>
-
             <div class="navbar-nav">
                 <a class="nav-link" href="{% url 'home' %}">
                     Главная
@@ -39,15 +39,19 @@
                     Спорт
                 </a>
                 {% if user.is_authenticated %}
-
-                <a href="{% url 'article_create' %}">
+                <a href="{% url 'add_article' %}" class="nav-link">
                     Создать новость
                 </a>
+                {% endif %}
 
+                {% if user.is_authenticated %}
+                    <p class="nav-link">Привет, {{ user.first_name|default:user.username }}!</p>
+                {% else %}
+                    <p class="nav-link">Добро пожаловать на наш новостной портал!</p>
                 {% endif %}
                 {% if user.is_authenticated %}
 
-                <span>
+                <span class="nav-link">
                     Вы вошли как: {{ user.username }}
                 </span>
 
@@ -58,14 +62,14 @@
                 >
                     {% csrf_token %}
 
-                    <button type="submit" >
+                    <button type="submit" class="nav-link" >
                         Выйти
                     </button>
                 </form>
 
             {% else %}
 
-                <a href="{% url 'login' %}">
+                <a href="{% url 'login' %}" class="nav-link">
                     Войти
                 </a>
 
