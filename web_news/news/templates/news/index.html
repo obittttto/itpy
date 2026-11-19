@@ -17,18 +17,35 @@
         </p>
     </div>
 </div>
+<form method="GET">
 
+    <input
+            type="text"
+            name="q"
+            placeholder="Введите название новости"
+            value="{{ query }}"
+    >
+
+    <button type="submit">
+        Найти
+    </button>
+</form>
 <div class="row">
     {% for article in articles %}
         <div class="col-12 mb-4">
             <article class="card border-primary shadow-sm">
+
                 <div class="card-body">
+
+
 
                     <h2 class="card-title h4">
 
                         <a href="{% url 'article_detail' article_id=article.id %}" class="text-decoration-none">
                             {{ article.title }}
                         </a>
+
+
 
                     </h2>
                     {% if article.image %}
@@ -49,8 +66,11 @@
                         {{ article.created_at|date:"d.m.Y H:i" }}
                     </p>
 
+
                 </div>
+
             </article>
+
         </div>
     {% empty %}
         <div class="col-12">
@@ -59,6 +79,38 @@
             </div>
         </div>
     {% endfor %}
+</div>
+<div class="pagination">
+
+    {% if page_obj.has_previous %}
+
+    <a href="?page=1&q={{ query }}">
+        Первая
+    </a>
+
+    <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">
+        Назад
+    </a>
+
+    {% endif %}
+
+    <span>
+        Страница {{ page_obj.number }}
+        из {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+
+    <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">
+        Вперёд
+    </a>
+
+    <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">
+        Последняя
+    </a>
+
+    {% endif %}
+
 </div>
 
 {% endblock %}

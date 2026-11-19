@@ -44,6 +44,12 @@
                 </a>
                 {% endif %}
 
+                {% if perms.news.change_article %}
+                    <a href="{% url 'archived_articles' %}">
+                        Скрытые новости
+                    </a>
+                {% endif %}
+
                 {% if user.is_authenticated %}
                     <p class="nav-link">Привет, {{ user.first_name|default:user.username }}!</p>
                 {% else %}

@@ -7,6 +7,9 @@ from .forms import ArticleForm
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Q
+from django.core.paginator import Paginator
+from django.core.files.storage import default_storage
 
 def about(request):
     content = {
@@ -36,19 +39,38 @@ def contact(request):
 
 
 def index(request):
+
+    query = request.GET.get("q", "").strip()
+
     articles = Article.objects.filter(
         is_published=True,
         is_active=True
-    ).order_by("-created_at")
+    )
+
+    if query:
+        articles = articles.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query)
+        )
+
+    articles = articles.order_by("-created_at")
+
+    paginator = Paginator(articles, 5)
+
+    page_obj = paginator.get_page(
+        request.GET.get("page")
+    )
 
     context = {
-        "articles": articles,
+        "articles": page_obj,
+        "page_obj": page_obj,
+        "query": query,
     }
 
     return render(
         request,
         "news/index.html",
-        context,
+        context
     )
 
 
@@ -190,23 +212,32 @@ def article_created(request):
 @login_required
 @permission_required("news.delete_article", raise_exception=True)
 def delete_article(request, article_id):
+
     article = get_object_or_404(
         Article,
         id=article_id
     )
 
     if request.method == "POST":
-        article.delete()
-        return redirect("home")
 
-    context = {
-        "article": article,
-    }
+        image_name = article.image.name if article.image else None
+
+        article.delete()
+
+        if image_name:
+            image_is_used = Article.objects.filter(
+                image=image_name
+            ).exists()
+
+            if not image_is_used:
+                default_storage.delete(image_name)
+
+        return redirect("home")
 
     return render(
         request,
         "news/delete_article.html",
-        context
+        {"article": article}
     )
 
 @login_required
@@ -260,5 +291,22 @@ def restore_article(request, article_id):
         "news/restore_article.html",
         {"article": article}
     )
+
+@login_required
+@permission_required("news.change_article", raise_exception=True)
+def archived_articles(request):
+
+    articles = Article.objects.filter(
+        is_active=False
+    ).order_by("-created_at")
+
+    return render(
+        request,
+        "news/archived_articles.html",
+        {"articles": articles}
+    )
+
+
+
 
 # Create your views here.
